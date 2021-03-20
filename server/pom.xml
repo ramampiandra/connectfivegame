@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.server</groupId>
-	<artifactId>backend</artifactId>
+	<artifactId>server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>comteen</name>
+	<name>server</name>
 	<description>Server Game</description>
 	<properties>
 		<java.version>11</java.version>
