@@ -4,6 +4,11 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import org.springframework.stereotype.Component;
 
+/**
+ * This class manages the keepAlive data from the players
+ * @author modis
+ *
+ */
 @Component
 public class KeepAlive {
 	
