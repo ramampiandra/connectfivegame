@@ -4,6 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
+/**
+ * This is the main application which runs the Spring http server (Rest controller)
+ * @author modis
+ *
+ */
 @SpringBootApplication
 @EnableScheduling
 public class MainApplication {

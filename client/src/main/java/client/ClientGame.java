@@ -82,6 +82,10 @@ public class ClientGame {
 
 	}
 	
+	/**
+	 * Return the state of GameState to the client
+	 * @throws Exception
+	 */
 	public void stateGame() throws Exception {
 		gameState = HttpClientHandler.getData("/state");
 	}

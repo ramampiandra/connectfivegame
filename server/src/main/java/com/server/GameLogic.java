@@ -4,6 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * This class holds the whole logic of the application$
+ * The class is a Singleton class, in case, we wan to manage multiplayres games, change it to protype instance
+ * Init the game
+ * Manage the players
+ * Run the algorithm to check if there is a 5 connect disc in the board game
+ * @author modis
+ *
+ */
 public class GameLogic {
 	
 	private static GameLogic instance;
@@ -25,15 +34,25 @@ public class GameLogic {
     
     private int pointerTurn = 1;
     
+    /**
+     * Clear or reinitialize the state of the game
+     * In case the two players for example has been disconnected
+     */
     public void cleatGameData() {
     	gameState.getUserColorPieces().clear();
     	gameState.getUserNames().clear();
     	gameState = null;
     	pointerTurn = 1;
     }
-        
+    
+    /**
+     * This method init the game
+     * Client send request the game and this method receive it for processing
+     * @param userId
+     * @param userColorPiece
+     */
     public void initState(String userId, String userColorPiece) {
-    	if(gameState == null) {
+    	if(gameState == null) { //Run this if bloc for the first player which initiates the game
 	    	gameState = new GameState();
 	    	gameState.setStateGame(new String [6][9]);
 	    	gameState.setTurn(userId);
@@ -56,7 +75,7 @@ public class GameLogic {
 	    		}
 	    	}
 	    	
-    	} else if(!gameState.getUserNames().contains(userId) 
+    	} else if(!gameState.getUserNames().contains(userId)  //In case the second player ask to init the game, run this if bloc
     					&& gameState.getUserNames().size() == 1) {
 	    	gameState.getUserNames().add(userId);
 	    	gameState.setErrorMessage("");
@@ -65,13 +84,19 @@ public class GameLogic {
 	    			gameState.getUserColorPieces().add(s);
 	    		}
 	    	}
-    	} else if(gameState.getUserNames().size() == 2) {
+    	} else if(gameState.getUserNames().size() == 2) { //In case there are already two players , throw an error message
     		gameState.setErrorMessage("The game has already two players in progres, namely : " + gameState.getUserNames());
-    	} else {
+    	} else { //In case the input userName is already exist
     		gameState.setErrorMessage("This user is already registered");
     	}
     }
     
+    /**
+     * This Method process the algorithm and manage the turn of the player
+     * @param userId
+     * @param column
+     * @return
+     */
     public GameState game(String userId, int column) {
     	
     	if(gameState != null ) {
@@ -82,7 +107,7 @@ public class GameLogic {
         	// Get colorPiece of user
         	String colorPiece = gameState.getColorPieceFromUserId(userId);
         	
-        	// Update Board
+        	// Update Board according to the column's value
         	String [][] board = gameState.getStateGame();
         	int j = column - 1;
         	for(int i = board.length - 1; i >= 0; i--) {
@@ -103,6 +128,12 @@ public class GameLogic {
 
     }
     
+    /**
+     * Method to check if there will be a winner
+     * Also check if the game is draw
+     * @param gameState
+     * @return
+     */
     public GameState evaluateGame(GameState gameState) {
     	String [][] board = gameState.getStateGame();
     	boolean isGameOver = false;
