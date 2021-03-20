@@ -7,6 +7,11 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * This is the logic of the client game
+ * @author claire
+ *
+ */
 public class ClientGame {
 	
 	private GameState gameState;
@@ -25,6 +30,12 @@ public class ClientGame {
 	
 	public static AtomicBoolean isProgramTerminate = new AtomicBoolean(false);
 	
+	/**
+	 * Initialize the game by entering the user name and the color of piece
+	 * Give error when the user name is already exist
+	 * Or there are already two players in progress in the game 
+	 * @throws Exception
+	 */
 	public void initGame() throws Exception {
 		String error = null;
 		boolean isSecondPlayerToConnect = true;
@@ -62,7 +73,7 @@ public class ClientGame {
 		System.out.println("Your color piece is   " + (isSecondPlayerToConnect ? gameState.getUserColorPieces().get(1) 
 																					: colorPiece));
 		
-		//Run KeepAlive
+		//Run KeepAlive to inform the server that the client is still running
 		executorService = Executors.newFixedThreadPool(1);
 		executorService.execute(new KeepAlive(userId));
 		
@@ -74,6 +85,11 @@ public class ClientGame {
 		gameState = HttpClientHandler.getData("/state");
 	}
 	
+	/**
+	 * This method manages the logic of starting game 
+	 * Also manage the waiting player
+	 * @throws Exception
+	 */
 	public void startGame() throws Exception {
 		System.out.println("Waiting for the second player ...\n");
 		while(gameState.getUserNames().size() < 2 && gameState.getStatus() != ABORT_GAME) {
@@ -85,6 +101,7 @@ public class ClientGame {
 		
 		int waitingTurn = 0;
 		
+		//Get out the loop when the game is over or the game is draw
 		while(!Arrays.asList(GAME_DRAW, GAME_OVER,ABORT_GAME).contains(gameState.getStatus())) {
 			if(userId.equals(gameState.getTurn())) {
 				gameState.printBoardGame();
@@ -117,6 +134,10 @@ public class ClientGame {
 		}
 	}
 	
+	/**
+	 * Terminate the thread 
+	 * Call the deleteKeepAlive url to inform the server that 
+	 */
 	public void closeResources() {
 		try {
 			scanner.close();
@@ -130,6 +151,10 @@ public class ClientGame {
 		}
 	}
 	
+	/**
+	 * This methode terminate the thread used by KeepAlive.class
+	 * @param pool
+	 */
 	void shutdownAndAwaitTermination(ExecutorService pool) {
 	   pool.shutdown(); 
 	   try {

@@ -1,5 +1,10 @@
 package client;
 
+/**
+ * This is the main application
+ * @author claire
+ *
+ */
 public class MainApplication {
 
 	public static void main(String[] args) {

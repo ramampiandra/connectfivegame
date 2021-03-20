@@ -2,6 +2,11 @@ package client;
 
 import java.util.List;
 
+/**
+ * This store the game state collected from the server
+ * @author claire
+ *
+ */
 public class GameState {
 	
 	private List<String> userNames;

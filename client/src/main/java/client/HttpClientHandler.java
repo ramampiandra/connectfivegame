@@ -11,6 +11,12 @@ import java.time.Duration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+/**
+ * This class process the HTTP Request send or receive to/from the server
+ * We use the HttpClient java 11 class
+ * @author claire
+ *
+ */
 public class HttpClientHandler {
 	
     private static final HttpClient httpClient = HttpClient.newBuilder()
