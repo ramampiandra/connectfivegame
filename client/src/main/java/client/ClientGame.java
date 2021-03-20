@@ -42,9 +42,10 @@ public class ClientGame {
 		boolean isSecondPlayerToConnect = true;
 		do {
 			while(userId == null 
-					|| userId.isEmpty()) {
+					|| userId.isEmpty()
+					|| (userId != null && userId.contains(" "))) {
 				scanner = new Scanner(System.in);
-				System.out.println("Please insert your userId game");
+				System.out.println("Please insert your valid userId game (no space)");
 				userId = scanner.nextLine();
 			}
 			
@@ -132,7 +133,7 @@ public class ClientGame {
 		}
 		if(gameState.getStatus() == GAME_OVER) {
 			gameState.printBoardGame();
-			System.out.println("The winner is : " + gameState.getWinner());
+			System.out.println("The winner is : " + gameState.getWinner() + ", color : " + colorPiece);
 		} else if (gameState.getStatus() == GAME_OVER) {
 			gameState.printBoardGame();
 			System.out.println("The game is draw, no winner");
