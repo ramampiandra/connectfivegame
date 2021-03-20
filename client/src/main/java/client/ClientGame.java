@@ -26,6 +26,7 @@ public class ClientGame {
 	
 	Scanner scanner = null;
 	
+	//Thread to run the keepAlive
 	private ExecutorService executorService;
 	
 	public static AtomicBoolean isProgramTerminate = new AtomicBoolean(false);
@@ -49,7 +50,7 @@ public class ClientGame {
 			
 			stateGame();
 			
-			//Player one
+			//The first player (player one) should execute on this if
 			if(gameState == null) {
 				isSecondPlayerToConnect = false;
 				while(colorPiece == null 
@@ -92,9 +93,11 @@ public class ClientGame {
 	 */
 	public void startGame() throws Exception {
 		System.out.println("Waiting for the second player ...\n");
+		//We neet to wait until the game has two ready players and the game is not yet abort
 		while(gameState.getUserNames().size() < 2 && gameState.getStatus() != ABORT_GAME) {
+			//Make http request to get the new GameState
 			stateGame();
-			Thread.sleep(2000);
+			Thread.sleep(500);
 		}
 		
 		System.out.println("*** CONNECT 5 GAME *** \n");
@@ -103,6 +106,7 @@ public class ClientGame {
 		
 		//Get out the loop when the game is over or the game is draw
 		while(!Arrays.asList(GAME_DRAW, GAME_OVER,ABORT_GAME).contains(gameState.getStatus())) {
+			//Run this if bloc if it's the player turn
 			if(userId.equals(gameState.getTurn())) {
 				gameState.printBoardGame();
 				waitingTurn = 0;
@@ -112,7 +116,7 @@ public class ClientGame {
 					column = scanner.nextInt();
 				}
 				gameState = HttpClientHandler.getData("/game?userId=" + userId + "&column=" + column);
-			} else {
+			} else { //Else if run this one if it's not his turn
 				if(waitingTurn == 0) {
 					gameState.printBoardGame();
 					System.out.println("Waiting for " + gameState.getTurn() + " turn");
